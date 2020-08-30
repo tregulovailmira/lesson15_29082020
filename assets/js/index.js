@@ -171,3 +171,76 @@ function checkBraces(string) {
     }
     return stack.isEmpty;
 }
+
+class Queue{
+    constructor(...args) {
+        this._oldIndex = 0;
+        this._newIndex = 0;
+
+        for (let item of args) {
+            this.push(item);
+        }
+    }
+
+    get size() {
+        return this._newIndex - this._oldIndex;
+    }
+
+    get oldIndex() {
+        return this._oldIndex;
+    }
+
+    get newIndex() {
+        return this._newIndex;
+    }
+
+    push(value) {
+        this[this._newIndex++] = value;
+        return this.size;
+    }
+
+    pop() {
+        if (this.size === 0){
+            return;
+        }
+        const deletedItem = this[this._oldIndex];
+        delete this[this._oldIndex++];
+        return deletedItem;
+    }
+
+    peek() {
+        if (this.size === 0) {
+            return;
+        }
+        return this[this._oldIndex];
+    }
+}
+
+const q1 = new Queue('test1', 'test3', 'test5', 'test7', 'test9', 'test11');
+// q1.push('test1');
+// q1.push('test3');
+// q1.push('test5');
+// q1.push('test7');
+
+const q2 = new Queue('test2', 'test4', 'test6', 'test8', 'test10');
+// q2.push('test2');
+// q2.push('test4');
+// q2.push('test6');
+// q2.push('test8');
+
+function joinQueues(q1, q2) {
+    const result = new Queue();
+    if (q1.size === 0 || q2.size === 0) {
+        throw new SyntaxError('Queue can not be empty!');
+    }
+
+    while (q1.size || q2.size) {
+        if(q1.peek()) {
+            result.push(q1.pop());
+        }
+        if(q2.peek()) {
+            result.push(q2.pop());
+        }
+    }
+    return result;
+}
